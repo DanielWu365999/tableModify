@@ -1,0 +1,202 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial=scale=1">
+<title>动态表格</title>
+<link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
+<link href="css/layer.css" type="text/css" rel="stylesheet">
+<link href="css/layout.css" type="text/css" rel="stylesheet">
+</head>
+
+<body>
+<table class="table table-hover table-bordered" id="mytable">
+	<thead>
+		<tr>
+			<th>选中</th>
+			<th>编号</th>
+			<th>姓名</th>
+			<th>密码</th>
+			<th>生日</th>
+			<th>地址</th>
+			<th>操作</th>
+		</tr>
+		<tr>
+			<td><input type="checkbox" onclick="checkAll(this)"/></td>
+			<td colspan="6"><a href="javascript:;" class="btn btn-danger" role="button" onclick="delAll(this)">全部删除</a></td>
+		</tr>
+	</thead>
+	<tbody id="listTable">	
+		<tr>
+			<td><input type="checkbox" name="item" /></td>
+			<td>100806131234</td>
+			<td>劈日e斩月</td>
+			<td>123456</td>
+			<td>1995-08-07</td>
+			<td>北京市朝阳区艾欧尼亚</td>
+			<td>
+				<input type="button" name="" value="删除" class="btn btn-danger" onclick="del(this)" />
+				<input type="button" name="" value="修改" class="btn btn-info" onclick="modify(this)" />
+			</td>
+		</tr>
+	</tbody>
+</table>
+<hr />
+<h1>新增数据</h1>
+<form>
+	<table class="table table-hover table-bordered">
+		<tr>
+			<th>编号</th>
+			<td><input type="text" name="" class="form-control" id="num" /></td>
+		</tr>
+		<tr>
+			<th>姓名</th>
+			<td><input type="text" name="" class="form-control" id="username" /></td>
+		</tr>
+		<tr>
+			<th>密码</th>
+			<td><input type="password" name="" class="form-control" id="pwd" /></td>
+		</tr>
+		<tr>
+			<th>生日</th>
+			<td><input type="date" name="" class="form-control" id="birth" /></td>
+		</tr>
+		<tr>
+			<th>地址</th>
+			<td><input type="text" name="" class="form-control" id="addre" /></td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<input type="reset" value="重置" class="btn btn-primary" id="reset" />   
+                <input type="button" value="添加"  class="btn btn-success" id="add"  onclick="addList()" />
+                <input type="button" value="更新"  class="btn btn-info" id=""  onclick="update()" />
+			</td>
+		</tr>
+	</table>
+</form>
+<footer>
+Design By Dafeige.
+</footer>
+<script type="text/javascript">
+	//add功能
+	function addList(){
+		var oNum = document.getElementById('num').value;
+		var oUser = document.getElementById('username').value;
+		var oPwd = document.getElementById('pwd').value;
+		var oBirth = document.getElementById('birth').value;
+		var oAddre = document.getElementById('addre').value;
+		var oTr = document.createElement('tr');
+		var oTd1 = document.createElement('td');
+		var oInput = document.createElement('input');
+		oTd1.appendChild(oInput);
+		oInput.setAttribute('type','checkbox');
+		oInput.setAttribute('name','item');
+		var oTd2 = document.createElement('td');
+		oTd2.innerHTML = oNum;
+		var oTd3 = document.createElement('td');
+		oTd3.innerHTML = oUser;
+		var oTd4 = document.createElement('td');
+		oTd4.innerHTML = oPwd;
+		var oTd5 = document.createElement('td');
+		oTd5.innerHTML = oBirth;
+		var oTd6 = document.createElement('td');
+		oTd6.innerHTML = oAddre;
+		var oTd7 = document.createElement('td');
+		var oInput2 = document.createElement('input');
+		var oInput3 = document.createElement('input');
+		oInput2.setAttribute('type','button');
+		oInput2.setAttribute('value','删除');
+		oInput2.setAttribute('onclick','del(this)');
+		oInput2.className = 'btn btn-danger';
+		oInput3.setAttribute('type','button');
+		oInput3.setAttribute('value','修改');
+		oInput3.setAttribute('onclick','modify(this)');
+		oInput3.className = 'btn btn-info';
+		oTd7.appendChild(oInput2);
+		oTd7.appendChild(oInput3);
+		oTr.appendChild(oTd1);
+		oTr.appendChild(oTd2);
+		oTr.appendChild(oTd3);
+		oTr.appendChild(oTd4);
+		oTr.appendChild(oTd5);
+		oTr.appendChild(oTd6);
+		oTr.appendChild(oTd7);
+		var olistTable = document.getElementById('listTable');
+		olistTable.appendChild(oTr);
+	}
+	//del单点功能
+	function del(obj){
+		var oParentnode = obj.parentNode.parentNode;
+		var olistTable = document.getElementById('listTable');
+		olistTable.removeChild(oParentnode);
+	}
+	//全选
+	function checkAll(c){
+		var status = c.checked;
+		var oItems = document.getElementsByName('item');
+		for(var i=0;i<oItems.length;i++){
+			oItems[i].checked=status;
+		}
+	}
+	//delAll功能
+	function delAll(){
+		var olistTable = document.getElementById('listTable');
+		var items = document.getElementsByName("item");
+		for(var j=0;j<items.length;j++){	
+			if(items[j].checked)//如果item被选中
+			{
+				var oParentnode = items[j].parentNode.parentNode;
+				olistTable.removeChild(oParentnode);
+				j--;
+			}
+		}
+	}
+	//modify功能
+	function modify(obj){
+		var oNum = document.getElementById('num');
+		var oUser = document.getElementById('username');
+		var oPwd = document.getElementById('pwd');
+		var oBirth = document.getElementById('birth');
+		var oAddre = document.getElementById('addre');
+		var oTr = obj.parentNode.parentNode;
+		var aTd = oTr.getElementsByTagName('td');
+		rowIndex = obj.parentNode.parentNode.rowIndex;  
+		oNum.value = aTd[1].innerHTML;
+		oUser.value = aTd[2].innerHTML;
+		oPwd.value = aTd[3].innerHTML;
+		oBirth.value = aTd[4].innerHTML;
+		oAddre.value = aTd[5].innerHTML;
+		console.log(aTd[4].innerHTML);
+		//alert(i);
+
+	}
+	//update功能
+	function update(){
+		var oNum = document.getElementById('num');
+		var oUser = document.getElementById('username');
+		var oPwd = document.getElementById('pwd');
+		var oBirth = document.getElementById('birth');
+		var oAddre = document.getElementById('addre');
+		var oMytable = document.getElementById('mytable');
+		//alert(rowIndex);
+		//var aTd = rowIndex.cells;
+		console.log(oMytable.rows[rowIndex].cells)
+		oMytable.rows[rowIndex].cells[1].innerHTML = oNum.value;
+		oMytable.rows[rowIndex].cells[2].innerHTML = oUser.value;
+		oMytable.rows[rowIndex].cells[3].innerHTML = oPwd.value;
+		oMytable.rows[rowIndex].cells[4].innerHTML = oBirth.value;
+		oMytable.rows[rowIndex].cells[5].innerHTML = oAddre.value;
+	}
+</script>
+<script src="js/jquery.js"></script>
+<script src="js/layer.js"></script>
+<script>
+var index = layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
+//loading层
+var index = layer.load(1, {
+  shade: [0.4,'#000'], //0.1透明度的白色背景
+  time: 1500
+});
+</script>
+</body>
+</html>
